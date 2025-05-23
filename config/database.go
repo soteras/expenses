@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/soteras/expenses/internal/auth/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -57,7 +58,7 @@ func (d *Database) Connect() (*gorm.DB, error) {
 	}
 
 	if GetEnv("DB_AUTO_MIGRATE") == "true" {
-		db.AutoMigrate()
+		db.AutoMigrate(&model.User{})
 	}
 
 	return db, err
