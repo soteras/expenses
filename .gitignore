@@ -1,2 +1,5 @@
 # Ignore .env
 .env
+
+# ignore test.db
+test.db
