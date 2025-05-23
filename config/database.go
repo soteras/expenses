@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -25,8 +24,6 @@ func init() {
 }
 
 func NewDb() *Database {
-	fmt.Println(GetEnv("DB_TYPE"))
-
 	return &Database{
 		Dsn:         GetEnv("DB_DSN"),
 		DbType:      GetEnv("DB_TYPE"),
@@ -39,8 +36,6 @@ func (d *Database) Connect() (*gorm.DB, error) {
 	var err error
 	var db *gorm.DB
 	config := &gorm.Config{}
-
-	fmt.Println(d.DbType)
 
 	if d.Debug {
 		newLogger := logger.New(
