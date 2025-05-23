@@ -17,8 +17,8 @@ func TestNewDb(t *testing.T) {
 func TestConnec(t *testing.T) {
 	db := NewDb()
 
-	conn, err := db.Connect()
+	err := db.Connect()
 
 	assert.Nil(t, err)
-	assert.IsType(t, &gorm.DB{}, conn)
+	assert.IsType(t, &gorm.DB{}, db.Db)
 }
