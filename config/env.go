@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -14,13 +13,20 @@ const (
 )
 
 func LoadEnv() {
-	fmt.Println(os.Getenv("GO_ENV"))
 	if os.Getenv("GO_ENV") == EnvTest {
-		godotenv.Load(".env.test")
+		err := godotenv.Load("../.env.test")
+
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	if os.Getenv("GO_ENV") == EnvDevelopment {
-		godotenv.Load()
+		err := godotenv.Load()
+
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 

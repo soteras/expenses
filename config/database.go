@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -14,22 +15,34 @@ import (
 
 type Database struct {
 	Dsn         string
-	Conn        *gorm.DB
 	DbType      string
 	Debug       bool
 	AutoMigrate bool
 }
 
-func NewDb() *Database {
-	return &Database{}
+func init() {
+	LoadEnv()
 }
 
-func (d *Database) Connect() error {
-	var err error
-	config := &gorm.Config{}
-	app := NewApp()
+func NewDb() *Database {
+	fmt.Println(GetEnv("DB_TYPE"))
 
-	if GetEnv("DEBUG") == "true" {
+	return &Database{
+		Dsn:         GetEnv("DB_DSN"),
+		DbType:      GetEnv("DB_TYPE"),
+		Debug:       GetEnv("DB_SHOW_QUERIES") == "true",
+		AutoMigrate: GetEnv("DB_AUTO_MIGRATE") == "true",
+	}
+}
+
+func (d *Database) Connect() (*gorm.DB, error) {
+	var err error
+	var db *gorm.DB
+	config := &gorm.Config{}
+
+	fmt.Println(d.DbType)
+
+	if d.Debug {
 		newLogger := logger.New(
 			log.New(os.Stdout, "\r\n", log.LstdFlags),
 			logger.Config{
@@ -46,16 +59,17 @@ func (d *Database) Connect() error {
 		}
 	}
 
-	if app.ENV == EnvTest {
-		d.Conn, err = gorm.Open(sqlite.Open("test.db"), config)
+	switch d.DbType {
+	case "sqlite":
+		db, err = gorm.Open(sqlite.Open(d.Dsn), config)
 
-	} else {
-		d.Conn, err = gorm.Open(postgres.Open(GetEnv("DB_DSN")), config)
+	default:
+		db, err = gorm.Open(postgres.Open(d.Dsn), config)
 	}
 
-	if GetEnv("DB_AUTO_MIGRATE") == "true" {
-		d.Conn.AutoMigrate(&model.User{})
+	if d.AutoMigrate {
+		db.AutoMigrate(&model.User{})
 	}
 
-	return err
+	return db, err
 }
