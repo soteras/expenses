@@ -12,10 +12,6 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func init() {
-	LoadEnv()
-}
-
 type Database struct {
 	Dsn         string
 	DbType      string

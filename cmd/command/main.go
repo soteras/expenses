@@ -2,17 +2,14 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/soteras/expenses/config"
 )
 
-func main() {
-	if os.Getenv("GO_ENV") == "" {
-		os.Setenv("GO_ENV", config.EnvDevelopment)
-	}
-
+func init() {
 	config.LoadEnv()
+}
 
-	fmt.Println(config.GetEnv("GO_ENV"))
+func main() {
+	fmt.Println("Running command")
 }

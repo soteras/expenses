@@ -2,9 +2,7 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
-	"path/filepath"
 
 	"github.com/joho/godotenv"
 )
@@ -16,28 +14,13 @@ const (
 )
 
 func LoadEnv() {
-	wd, err := os.Getwd()
-
-	if err != nil {
-		log.Fatal(err)
+	fmt.Println(os.Getenv("GO_ENV"))
+	if os.Getenv("GO_ENV") == EnvTest {
+		godotenv.Load(".env.test")
 	}
 
-	root := filepath.Dir(wd)
-	env := os.Getenv("GO_ENV")
-
-	if env == "" {
-		envPath := filepath.Join(root, ".env.test")
-		env = EnvTest
-
-		if err := godotenv.Load(envPath); err != nil {
-			log.Fatalf("%s", fmt.Sprintf("Error to load .env.test: %v", err))
-		}
-	}
-
-	if env == EnvDevelopment {
-		if err := godotenv.Load(); err != nil {
-			log.Fatalf("%s", fmt.Sprintf("Error to load .env: %v", err))
-		}
+	if os.Getenv("GO_ENV") == EnvDevelopment {
+		godotenv.Load()
 	}
 }
 

@@ -7,6 +7,10 @@ import (
 	"github.com/soteras/expenses/config"
 )
 
+func init() {
+	config.LoadEnv()
+}
+
 func main() {
 	fmt.Println("API running..")
 	if os.Getenv("GO_ENV") == "" {
