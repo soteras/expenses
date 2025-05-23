@@ -11,10 +11,10 @@ api:
 	go run cmd/command/main.go
 
 test:
-	go test -v ./...
+	GO_ENV=test go test -v ./...
 
 test-coverage:
-	go list ./... | grep -v '/cmd' | xargs go test -v -cover
+	GO_ENV=test go list ./... | grep -v '/cmd' | xargs go test -v -cover
 
 create_migration:
 	migrate create -ext=sql -dir=$(MIGRATION_PATH) -seq $(name)
@@ -30,5 +30,3 @@ run_command:
 
 run_api:
 	GO_ENV=development go run cmd/api/main.go
-
-.PHONY: test test-coverage
