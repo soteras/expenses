@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"regexp"
 
 	"github.com/joho/godotenv"
 )
@@ -14,7 +15,12 @@ const (
 
 func LoadEnv() {
 	if os.Getenv("GO_ENV") == EnvTest {
-		err := godotenv.Load("../.env.test")
+		projectDirName := "expenses"
+		projectName := regexp.MustCompile(`^(.*` + projectDirName + `)`)
+		currentWorkDirectory, _ := os.Getwd()
+		rootPath := projectName.Find([]byte(currentWorkDirectory))
+
+		err := godotenv.Load(string(rootPath) + `/.env`)
 
 		if err != nil {
 			panic(err)
