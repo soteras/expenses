@@ -20,3 +20,9 @@ func (m *UserRepositoryMock) FindByID(id uuid.UUID) (*model.User, error) {
 	user, _ := args.Get(0).(*model.User)
 	return user, args.Error(1)
 }
+
+func (m *UserRepositoryMock) FindByEmail(email string) (*model.User, error) {
+	args := m.Called(email)
+	user, _ := args.Get(0).(*model.User)
+	return user, args.Error(1)
+}
