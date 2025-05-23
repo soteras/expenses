@@ -1,20 +1,19 @@
-package config_test
+package config
 
 import (
 	"testing"
 
-	"github.com/soteras/expenses/config"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetEnv(t *testing.T) {
-	config.LoadEnv()
+	LoadEnv()
 
-	assert.Equal(t, "test", config.GetEnv("GO_ENV"))
+	assert.Equal(t, "test", GetEnv("GO_ENV"))
 }
 
 func TestGetEnv_WithDefaultValue(t *testing.T) {
-	config.LoadEnv()
+	LoadEnv()
 
-	assert.Equal(t, "default", config.GetEnv("ENV", "default"))
+	assert.Equal(t, "default", GetEnv("ENV", "default"))
 }

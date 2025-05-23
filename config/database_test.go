@@ -1,22 +1,21 @@
-package config_test
+package config
 
 import (
 	"testing"
 
-	"github.com/soteras/expenses/config"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
 
 func TestNewDb(t *testing.T) {
-	db := config.NewDb()
+	db := NewDb()
 
 	assert.NotNil(t, db)
-	assert.IsType(t, &config.Database{}, db)
+	assert.IsType(t, &Database{}, db)
 }
 
 func TestConnec(t *testing.T) {
-	db := config.NewDb()
+	db := NewDb()
 
 	conn, err := db.Connect()
 
