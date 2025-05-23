@@ -4,7 +4,7 @@ type app struct {
 	ENV string
 }
 
-func NewAPP() *app {
+func NewApp() *app {
 	return &app{
 		ENV: GetEnv("GO_ENV"),
 	}

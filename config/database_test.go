@@ -20,6 +20,6 @@ func TestConnec(t *testing.T) {
 
 	conn, err := db.Connect()
 
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.IsType(t, &gorm.DB{}, conn)
 }

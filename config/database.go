@@ -11,6 +11,10 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+func init() {
+	LoadEnv()
+}
+
 type Database struct {
 	Dsn         string
 	DbType      string
@@ -26,7 +30,7 @@ func (d *Database) Connect() (*gorm.DB, error) {
 	var db *gorm.DB
 	var err error
 	config := &gorm.Config{}
-	app := NewAPP()
+	app := NewApp()
 
 	if GetEnv("DEBUG") == "true" {
 		newLogger := logger.New(
@@ -47,6 +51,7 @@ func (d *Database) Connect() (*gorm.DB, error) {
 
 	if app.ENV == EnvTest {
 		db, err = gorm.Open(sqlite.Open("test.db"), config)
+
 	} else {
 		db, err = gorm.Open(postgres.Open(GetEnv("DB_DSN")), config)
 	}
