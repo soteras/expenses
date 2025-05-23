@@ -6,6 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
+type UserRepository interface {
+	Create(user *model.User) error
+	FindByID(id uuid.UUID) (*model.User, error)
+}
+
 type userRepository struct {
 	db *gorm.DB
 }
@@ -14,9 +19,9 @@ func NewUserRepository(db *gorm.DB) *userRepository {
 	return &userRepository{db: db}
 }
 
-func (r *userRepository) Create(user *model.User) (*model.User, error) {
+func (r *userRepository) Create(user *model.User) error {
 	err := r.db.Create(&user).Error
-	return user, err
+	return err
 }
 
 func (r *userRepository) FindByID(id uuid.UUID) (*model.User, error) {
