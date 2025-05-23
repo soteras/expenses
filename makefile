@@ -25,4 +25,10 @@ migrate:
 rollback:
 	migrate -path=$(MIGRATION_PATH) -database $(MIGRATION_DB) -verbose down
 
+run_command:
+	GO_ENV=development go run cmd/command/main.go
+
+run_api:
+	GO_ENV=development go run cmd/api/main.go
+
 .PHONY: test test-coverage
