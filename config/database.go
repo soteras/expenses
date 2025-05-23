@@ -14,7 +14,7 @@ import (
 
 type Database struct {
 	Dsn         string
-	Db          *gorm.DB
+	Conn        *gorm.DB
 	DbType      string
 	Debug       bool
 	AutoMigrate bool
@@ -47,14 +47,14 @@ func (d *Database) Connect() error {
 	}
 
 	if app.ENV == EnvTest {
-		d.Db, err = gorm.Open(sqlite.Open("test.db"), config)
+		d.Conn, err = gorm.Open(sqlite.Open("test.db"), config)
 
 	} else {
-		d.Db, err = gorm.Open(postgres.Open(GetEnv("DB_DSN")), config)
+		d.Conn, err = gorm.Open(postgres.Open(GetEnv("DB_DSN")), config)
 	}
 
 	if GetEnv("DB_AUTO_MIGRATE") == "true" {
-		d.Db.AutoMigrate(&model.User{})
+		d.Conn.AutoMigrate(&model.User{})
 	}
 
 	return err
