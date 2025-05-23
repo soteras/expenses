@@ -27,3 +27,26 @@ func TestCreate_Create(t *testing.T) {
 	assert.Equal(t, user.ID.String(), target.ID.String())
 	assert.Equal(t, "test@gmail.com", target.Email)
 }
+
+func TestFindByEmail(t *testing.T) {
+	conn := setupDb()
+	conn.Exec("DELETE FROM users")
+	repo := NewUserRepository(conn)
+	user, _ := model.NewUser("test@gmail.com", "pass1234")
+
+	repo.Create(user)
+	target, _ := repo.FindByEmail(user.Email)
+
+	assert.Equal(t, user.ID.String(), target.ID.String())
+}
+
+func TestFindByEmail_ReturnsNilWhenUserIsNotFound(t *testing.T) {
+	conn := setupDb()
+	conn.Exec("DELETE FROM users")
+	repo := NewUserRepository(conn)
+
+	user, err := repo.FindByEmail("test@gmail.com")
+
+	assert.Nil(t, err)
+	assert.Nil(t, user)
+}
